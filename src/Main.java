@@ -47,10 +47,7 @@ public class Main {
         int start = reader.nextInt();
         System.out.println("Please enter the ending node.");
         int end = reader.nextInt();
-        System.out.println("Would you like to run a breadth-first search? (y/n)");
-        String breadth = reader.next();
-        String result = GraphArray.searching(myGraphArray, start, end, breadth);
-        System.out.println(result);
+        GraphArray.searching(myGraphArray, start, end);
 
     }
 }

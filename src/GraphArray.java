@@ -56,27 +56,26 @@ public class GraphArray {
         return rBool;
     }
 
-    static String breadthSearch (GraphArray myGraphArray, int start, int end){
+    static void breadthSearch (GraphArray myGraphArray, int start, int end){
         String result = "";
-        List<Integer> vistedNode = new ArrayList<Integer>();
+        List<Integer> visitedNode = new ArrayList<Integer>();
         int[][] nodeLinks = new int[myGraphArray.size][myGraphArray.size];
 
         for (int[] row: nodeLinks)
             Arrays.fill(row, -1);
-        //printGrid(nodeLinks);
 
         int counter = 0;
         boolean finished = false;
 
-        vistedNode.add(start);
+        visitedNode.add(start);
         nodeLinks[start][start] = start;
 
         while (!finished) {
             for (int i = 0; i < myGraphArray.size; i++) {
-                if (myGraphArray.weightArray[vistedNode.get(counter)][i] != 0) {
+                if (myGraphArray.weightArray[visitedNode.get(counter)][i] != 0) {
                     if (!checkRepeat(myGraphArray, nodeLinks, i)) {
-                        vistedNode.add(i);
-                        nodeLinks[i][vistedNode.indexOf(vistedNode.get(counter))] = i;
+                        visitedNode.add(i);
+                        nodeLinks[i][visitedNode.indexOf(visitedNode.get(counter))] = i;
                         System.out.println("");
                         //printGrid(nodeLinks);
                         if (i == end) {
@@ -95,22 +94,24 @@ public class GraphArray {
         while (saveBackNode != start) {
             for (int j = 0; j < myGraphArray.size; j++) {
                 if (nodeLinks[saveBackNode][j] == saveBackNode) {
-                    total = total + myGraphArray.weightArray[vistedNode.get(j)][saveBackNode];
-                    saveBackNode = vistedNode.get(j);
+                    total = total + myGraphArray.weightArray[visitedNode.get(j)][saveBackNode];
+                    saveBackNode = visitedNode.get(j);
                     result = saveBackNode + " " + result;
                     break;
                 }
             }
         }
 
-        result = "The pathway is: " + result + " and the total is: " + total;
-        return result;
+        System.out.println("The breadth result is:");
+        System.out.println( result );
+        System.out.println("and the total is: " + total);
+        System.out.println("The number of nodes visited is " + (visitedNode.size() - 1));
     }
 
-    static String depthSearch(GraphArray myGraphArray, int start, int end){
-        String result = "";
+    static void depthSearch(GraphArray myGraphArray, int start, int end){
         List<Integer> vistedNode = new ArrayList<Integer>();
         List<Integer> currentNodePath = new ArrayList<Integer>();
+        int visitedNodeInt = 0;
 
         vistedNode.add(start);
         int currentNode = start;
@@ -124,6 +125,7 @@ public class GraphArray {
                 if ((myGraphArray.weightArray[currentNode][i] != 0) && (vistedNode.indexOf(i) == -1)) {
                     total = total + myGraphArray.weightArray[currentNode][i];
                     currentNode = i;
+                    visitedNodeInt++;
                     if (currentNode != end) {
                         currentNodePath.add(currentNode);
                         vistedNode.add(currentNode);
@@ -148,24 +150,27 @@ public class GraphArray {
             }
         }
 
+        System.out.println("The depth result is: ");
+
         for (int i = 0; i < currentNodePath.size(); i++){
-            result = result + currentNodePath.get(i);
+            System.out.print(currentNodePath.get(i) + " ");
         }
 
-        result = "The result is: " + result + " and the total is: " + total;
-
-        return result;
+        System.out.println("");
+        System.out.println("and the total is: " + total);
+        System.out.println("The number of visited nodes is " + visitedNodeInt);
     }
 
-    static String searching (GraphArray myGraphArray, int start, int end, String breadth){
-        String result = "null";
-        if (breadth.equals("y")){
-            result = breadthSearch(myGraphArray, start, end);
-        }
-        else {
-            result = depthSearch(myGraphArray, start, end);
-        }
-        return result;
+    static void searching (GraphArray myGraphArray, int start, int end){
+
+        final long startTime = System.currentTimeMillis();
+        System.out.println("");
+        breadthSearch(myGraphArray, start, end);
+        System.out.println("");
+        depthSearch(myGraphArray, start, end);
+        System.out.println("");
+        final long endTime = System.currentTimeMillis();
+        System.out.println("Total execution time: " + (endTime - startTime) + " milliseconds" );
     }
 
     GraphArray (int s){
@@ -195,8 +200,9 @@ public class GraphArray {
         fillConnection(7, 8, 3);
         fillConnection(8, 9, 4);
         //printGrid(weightArray);
-        */
+
         //printGrid(weightArray);
+        */
 
     }
 
